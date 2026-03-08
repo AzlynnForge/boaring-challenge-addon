@@ -1,0 +1,19 @@
+## Interface: 11200
+## Title: BoaringChallenge
+## Notes: Boar / Goretusk / Swine grind tracker (kills, KPH, XP/hr)
+## Author: AzlynnForge
+## Version: 1.0.0
+## SavedVariables: BoaringChallengeDB
+
+Locale.lua
+Locales\enUS.lua
+Locales\frFR.lua
+Locales\esES.lua
+Locales\deDE.lua
+Locales\zhCN.lua
+Locales\koKR.lua
+
+State.lua
+UI.lua
+Core.lua
+Commands.lua
