@@ -33,6 +33,14 @@ Perfect for long leveling sessions when you just want to know:
 
 ---
 
+## Screenshots
+
+![Tracker UI](screenshots/tracker-ui.png)
+
+![Settings](screenshots/settings.png)
+
+---
+
 ## 🎮 Supported Clients
 
 Designed for:
