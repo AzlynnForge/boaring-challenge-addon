@@ -16,6 +16,25 @@ function ST:IsTrackedMobName(name)
   return string.find(n, "boar", 1, true) or string.find(n, "goretusk", 1, true) or string.find(n, "swine", 1, true)
 end
 
+function ST:IsSpellbookReady()
+  -- If we can get at least one spell, spellbook is loaded
+  local firstSpell = GetSpellName(1, BOOKTYPE_SPELL)
+  return firstSpell ~= nil
+end
+
+function ST:HasBoaringAdventureSpell()
+  local i = 1
+  while true do
+    local spellName = GetSpellName(i, BOOKTYPE_SPELL)
+    if not spellName then break end
+    if spellName == "Boaring Adventure" then
+      return true
+    end
+    i = i + 1
+  end
+  return false
+end
+
 function ST:SecondsToHMS(sec)
   if sec < 0 then sec = 0 end
   local h = math.floor(sec / 3600)
@@ -127,12 +146,20 @@ end
 function ST:DBInit()
   if not BoaringChallengeDB then BoaringChallengeDB = {} end
 
-  if not BoaringChallengeDB.global then
-    BoaringChallengeDB.global = { totalKills = 0 }
-  else
-    if not BoaringChallengeDB.global.totalKills then
-      BoaringChallengeDB.global.totalKills = 0
-    end
+  -- Check if character was recreated (level decreased)
+  local currentLevel = UnitLevel("player")
+  local storedLevel = BoaringChallengeDB.characterLevel or 0
+  local wasRecreated = false
+
+  if storedLevel > 0 and currentLevel < storedLevel then
+    -- Character was deleted and recreated - reset all data
+    wasRecreated = true
+    BoaringChallengeDB = {}
+  end
+
+  -- Initialize database
+  if not BoaringChallengeDB.totalKills then
+    BoaringChallengeDB.totalKills = 0
   end
 
   if not BoaringChallengeDB.settings then
@@ -152,6 +179,11 @@ function ST:DBInit()
     if BoaringChallengeDB.settings.showDeaths == nil then BoaringChallengeDB.settings.showDeaths = true end
     if BoaringChallengeDB.settings.showTTL == nil then BoaringChallengeDB.settings.showTTL = true end
   end
+
+  -- Update stored level to current level
+  BoaringChallengeDB.characterLevel = currentLevel
+
+  return wasRecreated
 end
 
 -- Session State
@@ -227,7 +259,7 @@ function ST:OnHostileDeathMessage(msg)
   local S = ST.S
 
   S.sessionKills = S.sessionKills + 1
-  BoaringChallengeDB.global.totalKills = (BoaringChallengeDB.global.totalKills or 0) + 1
+  BoaringChallengeDB.totalKills = (BoaringChallengeDB.totalKills or 0) + 1
   S.lastKillName = mob
 
   local t = now()

@@ -2,8 +2,8 @@
 ## Title: BoaringChallenge
 ## Notes: Boar / Goretusk / Swine grind tracker (kills, KPH, XP/hr)
 ## Author: AzlynnForge
-## Version: 1.0.0
-## SavedVariables: BoaringChallengeDB
+## Version: 1.1.0
+## SavedVariablesPerCharacter: BoaringChallengeDB
 
 Locale.lua
 Locales\enUS.lua

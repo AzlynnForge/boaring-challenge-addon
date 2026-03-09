@@ -11,6 +11,12 @@ SLASH_BOARINGCHALLENGE1 = "/boar"
 SLASH_BOARINGCHALLENGE2 = "/boaring"
 
 SlashCmdList["BOARINGCHALLENGE"] = function(msg)
+  -- Check if addon is enabled for this character
+  if not Core.isEnabled then
+    DEFAULT_CHAT_FRAME:AddMessage(BC:T("CHAT_PREFIX") .. ": " .. BC:T("NOT_ON_CHALLENGE"))
+    return
+  end
+
   msg = lower(msg or "")
   msg = string.gsub(msg, "^%s+", "")
   msg = string.gsub(msg, "%s+$", "")
@@ -21,6 +27,7 @@ SlashCmdList["BOARINGCHALLENGE"] = function(msg)
     DEFAULT_CHAT_FRAME:AddMessage(BC:T("HELP_HIDE"))
     DEFAULT_CHAT_FRAME:AddMessage(BC:T("HELP_TOGGLE"))
     DEFAULT_CHAT_FRAME:AddMessage(BC:T("HELP_RESET"))
+    DEFAULT_CHAT_FRAME:AddMessage(BC:T("HELP_RESETTOTAL"))
     DEFAULT_CHAT_FRAME:AddMessage(BC:T("HELP_LOCK"))
     DEFAULT_CHAT_FRAME:AddMessage(BC:T("HELP_UNLOCK"))
     DEFAULT_CHAT_FRAME:AddMessage(BC:T("HELP_DEATHS"))
@@ -32,6 +39,12 @@ SlashCmdList["BOARINGCHALLENGE"] = function(msg)
   if msg == "hide" then UI:SetShown(false); return end
   if msg == "toggle" then UI:SetShown(not BoaringChallengeDB.settings.shown); UI:Refresh(); return end
   if msg == "reset" then ST:ResetSession(); Core:Print(BC:T("SESSION_RESET")); UI:Refresh(); return end
+  if msg == "resettotal" or msg == "reset-total" then
+    BoaringChallengeDB.totalKills = 0
+    Core:Print(BC:T("TOTAL_KILLS_RESET"))
+    UI:Refresh()
+    return
+  end
   if msg == "lock" then UI:SetLocked(true); Core:Print(BC:T("FRAME_LOCKED")); return end
   if msg == "unlock" then UI:SetLocked(false); Core:Print(BC:T("FRAME_UNLOCKED")); return end
 

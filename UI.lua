@@ -9,6 +9,9 @@ local ST = BC.State
 UI.frame = CreateFrame("Frame", "BoaringChallengeFrame", UIParent)
 local frame = UI.frame
 
+-- Hide by default - only shown when addon is enabled for challenge characters
+frame:Hide()
+
 -- Color helpers (WoW color codes)
 local C = {
   reset = "|r",
@@ -100,11 +103,10 @@ function UI:Refresh()
   local elapsed = time() - S.sessionStart
   local recentSpk = ST:AvgList(S.recentDt)
   local recentXpk = ST:AvgList(S.recentXp)
-  local global = BoaringChallengeDB.global
 
   -- Line 1
   local sKills = colorize(C.white, ST:FmtInt(S.sessionKills))
-  local tKills = colorize(C.white, ST:FmtInt(global.totalKills))
+  local tKills = colorize(C.white, ST:FmtInt(BoaringChallengeDB.totalKills))
 
   line1:SetText(string.format(BC:T("LINE1"), sKills, tKills))
 

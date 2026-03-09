@@ -11,6 +11,7 @@ desktop.ini
 .vscode/
 .idea/
 *.code-workspace
+.luarc.json
 
 # ==============================
 # Lua build artifacts (if ever added)
@@ -36,3 +37,8 @@ SavedVariables/
 # Logs
 # ==============================
 *.log
+
+# ==============================
+# Claude Code temporary files
+# ==============================
+tmpclaude-*-cwd
